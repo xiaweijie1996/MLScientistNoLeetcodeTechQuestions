@@ -96,14 +96,14 @@ Mermaid diagrams are included to anchor mental models for autograd and DDP. (No 
 
 ```mermaid
 flowchart LR
-  A[Inputs: leaf tensors<br/>requires_grad?] --> B[Forward ops recorded<br/>build DAG of grad_fn nodes]
-  B --> C[Loss scalar]
-  C --> D[backward()]
-  D --> E[Traverse graph in reverse<br/>apply chain rule]
-  E --> F[Accumulate into.grad on leaf params]
-  B --> G[Saved tensors for backward<br/>(ctx.save_for_backward)]
-  G --> E
-  H[Hooks<br/>Tensor.register_hook / Node.register_hook] --> E
+  A["Inputs: leaf tensors<br/>requires_grad?"] --> B["Forward ops recorded<br/>build DAG of grad_fn nodes"];
+  B --> C["Loss scalar"];
+  C --> D["backward()"];
+  D --> E["Traverse graph in reverse<br/>apply chain rule"];
+  E --> F["Accumulate into .grad on leaf params"];
+  B --> G["Saved tensors for backward<br/>(ctx.save_for_backward)"];
+  G --> E;
+  H["Hooks<br/>Tensor.register_hook / Node.register_hook"] --> E;
 ```
 
 This aligns with PyTorch’s description of the dynamic autograd graph, `grad_fn`, leaf vs non-leaf tensors, and saved tensors / hooks. 
