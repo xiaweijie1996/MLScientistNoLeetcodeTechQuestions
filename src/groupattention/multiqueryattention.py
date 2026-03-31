@@ -37,13 +37,13 @@ class MultiQueryattention(nn.Module):
         
         # Reshape the q, k ,v
         q = q.view(b, sl, self.head_num, self.head_dim).transpose(1, 2)  # (b, head_num, sl, head_dim)
-        k = k.unsqueeze(1) # (b, 1, sk, hidden_dim)
-        v = v.unsqueeze(1)  # (b, 1, sk, hidden_dim)
+        k = k.unsqueeze(1) # (b, 1, sk, head_dim)
+        v = v.unsqueeze(1)  # (b, 1, sk, head_dim)
         
         score = torch.matmul(q, k.transpose(-2, -1))/(self.head_dim**0.5) # (b, self.head_num, sl, sk)
         
         if mask is not None:
-            score = score.masked_fill(mask==0, float("-inf"))
+            score = score.masked_fill(~mask, float("-inf"))
         
         attention_weight = torch.softmax(score, dim=-1) # (b, self.head_num, sl, sk)
         
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     out = qattention(q, k, v)
     print(out.shape)
     
-    mask = torch.ones((1, 1, 5, 3))  # must broadcast to (b, head_num, sl, sk)
+    mask = torch.ones((1, 1, 5, 3), dtype=torch.bool)  # must broadcast to (b, head_num, sl, sk)
     out = qattention(q, k, v, mask)
     print(out.shape)
         
