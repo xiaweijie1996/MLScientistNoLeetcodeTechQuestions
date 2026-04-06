@@ -133,6 +133,12 @@ class MultiHeadAttention(nn.Module):
         scores = torch.matmul(q, k.transpose(-2, -1))/self.head_dim**0.5
         
         if mask is not None:
+            # allow mask shape (S,S), (B,S,S), or (B,1,S,S)
+            if mask.dim() == 2:
+                mask = mask.unsqueeze(0).unsqueeze(0)   # (1,1,S,S)
+            elif mask.dim() == 3:
+                mask = mask.unsqueeze(1)                # (B,1,S,S)
+
             scores = scores.masked_fill(~mask, float("-inf"))
             
         scores = self.softmaxlayer(scores)
