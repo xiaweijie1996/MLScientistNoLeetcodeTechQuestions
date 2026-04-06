@@ -73,7 +73,9 @@ This table covers the example notebooks and scripts currently under [`src`](src)
 | Attention | Grouped-query attention | Python script | [src/groupattention/groupqueryattention.py](src/groupattention/groupqueryattention.py) | Script version of grouped-query attention logic |
 | Attention | Multi-query attention | Notebook | [src/groupattention/multiqueryattention.ipynb](src/groupattention/multiqueryattention.ipynb) | Multi-query attention concepts and implementation |
 | Attention | Multi-query attention | Python script | [src/groupattention/multiqueryattention.py](src/groupattention/multiqueryattention.py) | Script version of multi-query attention logic |
+| Attention | Rotary embedding | Notebook | [src/rotary-embedding/rotaryembedding.ipynb](src/rotary-embedding/rotaryembedding.ipynb) | RoPE equations, intuition, and self-attention integration |
 | Precision | Mixed precision | Notebook | [src/mixed-precision/mixedprecision.ipynb](src/mixed-precision/mixedprecision.ipynb) | AMP and precision tradeoffs in training |
+| Routing | Mixture of Experts | Notebook | [src/moe/moe.ipynb](src/moe/moe.ipynb) | Sparse expert routing, top-k dispatch, and load balancing |
 | Model basics | Simple neural network | Notebook | [src/simplennmodel/simplenn.ipynb](src/simplennmodel/simplenn.ipynb) | Model-building and training loop fundamentals |
 | Numerics | Stable log-softmax | Notebook | [src/stablesoftmax/stablelogsoftmax.ipynb](src/stablesoftmax/stablelogsoftmax.ipynb) | Numerical stability for softmax and log-softmax |
 | Numerics | Softmax playground | Python script | [src/stablesoftmax/play_softmax.py](src/stablesoftmax/play_softmax.py) | Quick comparisons and experiments for softmax behavior |
