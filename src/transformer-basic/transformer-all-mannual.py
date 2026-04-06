@@ -71,8 +71,27 @@ class SoftMax(nn.Module):
 def casual_mask(seq_len: int)->torch.Tensor:
     return torch.tril(torch.ones((seq_len, seq_len), dtype=torch.bool)) # (emb_dim, emb_dim)
         
-def positional_econding(seq_len: int, emd_dim:int)->torch.Tensor:
-    pass
+def positional_encoding(seq_len: int, emb_dim:int)->torch.Tensor:
+    # data (-1, s_l. emb_dim)
+    # (pos,2i ) sin(pos/1000**2i/d) , pos is row, 2i is colum
+    # (pos,2i+1 ) sin(pos/1000**2i/d) , pos is row, 2i+1 is colum
+    
+    position = torch.arange(seq_len).unsqueeze(1) # (seq_len, 1)
+    
+    # (emb_dim/2,)
+    div_term = torch.arange(0, emb_dim, 2, dtype=torch.float32)
+    div_term = 1.0 / (10000 ** (div_term / emb_dim))
+    
+    # div_term = torch.exp(
+    # torch.arange(0, emb_dim, 2, dtype=torch.float32) * 
+    # (-math.log(10000.0) / emb_dim)
+    # )
+    
+    pe = torch.zeros(seq_len, emb_dim)
+    pe[:, 0::2] = torch.sin(position * div_term)
+    pe[:, 1::2] = torch.cos(position * div_term)
+    
+    return pe
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, 
@@ -92,7 +111,7 @@ class MultiHeadAttention(nn.Module):
             raise ValueError("Embedding dimsion can not be divided  by head number")
         else:
             self.head_dim = emb_dim//head_num
-        
+            
         self.softmaxlayer = SoftMax(dim=-1)
         self.fnn = nn.Linear(emb_dim, emb_dim)
       
